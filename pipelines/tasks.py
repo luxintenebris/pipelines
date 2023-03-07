@@ -1,3 +1,5 @@
+import sqlite3
+
 class BaseTask:
     """Base Pipeline Task"""
 
@@ -51,6 +53,10 @@ class RunSQL(BaseTask):
         return f'{self.title}'
 
     def run(self):
+        sqlite_connection = sqlite3.connect('result.db')
+        cursor = sqlite_connection.cursor()
+        cursor.execute(self.sql_query)
+
         print(f"Run SQL ({self.title}):\n{self.sql_query}")
 
 
