@@ -20,8 +20,8 @@ TASKS = [
     ),
 
     # clean up:
-    tasks.RunSQL('drop table {original}'),
-    tasks.RunSQL('drop table {norm}'),
+    tasks.RunSQL('CREATE TABLE sqlitedb_developers2 (id INTEGER PRIMARY KEY, name TEXT NOT NULL, url text NOT NULL, domain_of_url NOT NULL)'),
+    # tasks.RunSQL('drop table {norm}'),
 ]
 
 

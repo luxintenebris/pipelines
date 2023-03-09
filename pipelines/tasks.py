@@ -56,7 +56,8 @@ class RunSQL(BaseTask):
         sqlite_connection = sqlite3.connect('result.db')
         cursor = sqlite_connection.cursor()
         cursor.execute(self.sql_query)
-
+        sqlite_connection.commit()
+        cursor.close()
         print(f"Run SQL ({self.title}):\n{self.sql_query}")
 
 
