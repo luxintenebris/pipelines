@@ -6,23 +6,24 @@ VERSION = '2023'
 
 
 TASKS = [
-    tasks.LoadFile(input_file='original/original.csv', table='original'),
-    tasks.CTAS(
-        table='norm',
-        sql_query='''
-            select *, domain_of_url(url)
-            from {original};
-        '''
-    ),
+    # tasks.LoadFile(input_file='original/original.csv', table='original'),
+    # tasks.CTAS(
+    #     table='norm',
+    #     sql_query='''
+    #         select *, domain_of_url(url)
+    #         from original;
+    #     '''
+    # ),
     tasks.CopyToFile(
         table='norm',
         output_file='norm',
     ),
 
-    # clean up:
-    tasks.RunSQL('CREATE TABLE sqlitedb_developers3 (id INTEGER PRIMARY KEY, name TEXT NOT NULL, url text NOT NULL, domain_of_url NOT NULL)'),
-    tasks.RunSQL('INSERT INTO sqlitedb_developers3 (id, name, url, domain_of_url) VALUES(1, "teg", "hello", "hi")'),
-    tasks.RunSQL('drop table sqlitedb_developers3'),
+    # # clean up:
+    # tasks.RunSQL('drop table original'),
+    # tasks.RunSQL('drop table norm'),
+    # tasks.RunSQL('CREATE TABLE original (id INTEGER PRIMARY KEY, name TEXT NOT NULL, url text NOT NULL)'),
+    # tasks.RunSQL('INSERT INTO sqlitedb_developers3 (id, name, url, domain_of_url) VALUES(1, "teg", "hello", "hi")'),
 ]
 
 
