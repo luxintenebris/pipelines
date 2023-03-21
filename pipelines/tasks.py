@@ -1,5 +1,7 @@
 import sqlite3
 import csv
+import pandas as pd
+import sqlite3
 
 class BaseTask:
     """Base Pipeline Task"""
@@ -29,14 +31,17 @@ class CopyToFile(BaseTask):
         sqlite_connection = sqlite3.connect("task.db")
         cursor = sqlite_connection.cursor()
 
-        data = [('id', 'name', 'url', 'domain_of_url')]
-        for row in cursor.execute("SELECT * FROM " + self.table):
-            data.append(row)
+        # data = [('id', 'name', 'url', 'domain_of_url')]
+        # for row in cursor.execute("SELECT * FROM " + self.table):
+        #     data.append(row)
             
-        myFile = open(self.output_file + '.csv', 'w', newline='')
-        with myFile:
-            writer = csv.writer(myFile)
-            writer.writerows(data)
+        # myFile = open(self.output_file + '.csv', 'w', newline='')
+        # with myFile:
+        #     writer = csv.writer(myFile)
+        #     writer.writerows(data)
+
+        clients = pd.read_sql('SELECT * FROM '+ self.table, sqlite_connection)
+        clients.to_csv(self.output_file+".csv", index=False)
 
 
         print(f"Copy table `{self.table}` to file `{self.output_file}`")
@@ -53,18 +58,9 @@ class LoadFile(BaseTask):
         return f'{self.input_file} -> {self.table}'
 
     def run(self):
-        lst_row = []
-        with open('original.csv', newline='') as File:  
-            reader = csv.reader(File)
-            for row in reader:
-                # print(row)
-                if (row[0] != 'id'):
-                    temp = (row[0], row[1], row[2])
-                    lst_row.append(temp)
-        
+        df = pd.read_csv(self.input_file)
         sqlite_connection = sqlite3.connect("task.db")
-        cursor = sqlite_connection.cursor()
-        cursor.executemany("INSERT INTO original VALUES(?, ?, ?)", lst_row)
+        df.to_sql(self.table, sqlite_connection, if_exists='append', index=False)
         sqlite_connection.commit()
 
         print(f"Load file `{self.input_file}` to table `{self.table}`")

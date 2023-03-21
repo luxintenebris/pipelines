@@ -6,6 +6,8 @@ VERSION = '2023'
 
 
 TASKS = [
+    tasks.LoadFile(input_file='o1.csv', table='original2'),
+    
     # tasks.LoadFile(input_file='original/original.csv', table='original'),
     # tasks.CTAS(
     #     table='norm',
@@ -15,8 +17,8 @@ TASKS = [
     #     '''
     # ),
     tasks.CopyToFile(
-        table='norm',
-        output_file='norm',
+        table='original2',
+        output_file='norm1',
     ),
 
     # # clean up:
