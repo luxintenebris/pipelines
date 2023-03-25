@@ -1,4 +1,5 @@
-FROM python:3.10-alpine
+FROM python:3.10-buster
+RUN pip install pandas
 
 ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
